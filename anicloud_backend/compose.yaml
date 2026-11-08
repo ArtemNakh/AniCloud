@@ -55,6 +55,8 @@ services:
     restart: on-failure
     build: .
     hostname: backnest
+    volumes:
+      - .:/app
     ports:
       -  "${APPLICATION_PORT}:5000"
     environment:

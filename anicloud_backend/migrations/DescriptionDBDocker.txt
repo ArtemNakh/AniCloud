@@ -1,0 +1,3 @@
+Для запуска міграції у докері
+docker compose exec NAMECONTAINER CONSOLEFUNCITON 
+docker compose exec backnest npm run migration:run
