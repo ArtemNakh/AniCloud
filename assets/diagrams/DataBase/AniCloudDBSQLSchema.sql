@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS `users` (
 	`id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(255) NOT NULL,
-	`email` VARCHAR(255) NOT NULL,
-	`password` VARCHAR(255) NOT NULL UNIQUE,
+	`email` VARCHAR(255) NOT NULL UNIQUE,
+	`password` VARCHAR(255) NOT NULL ,
 	PRIMARY KEY(`id`)
 );
 
@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS `films-actors` (
 	`id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 	`film_id` INTEGER NOT NULL,
 	`actor_id` INTEGER NOT NULL,
-	`crew-roke` VARCHAR(255) NOT NULL,
-	PRIMARY KEY(`id`)
+	`crew-role` VARCHAR(255) NOT NULL,
+	PRIMARY kEY(`id`)
 );
 
 
@@ -66,14 +66,14 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 	`email` VARCHAR(255) NOT NULL,
 	`token` VARCHAR(255) NOT NULL,
 	`type` ENUM('refresh-token', 'verify-token') NOT NULL,
-	`expires-id` DATETIME NOT NULL,
+	`expires-at` DATETIME NOT NULL,
 	PRIMARY KEY(`id`)
 );
 
 
 CREATE TABLE IF NOT EXISTS `roles` (
 	`id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL UNIQUE,
 	PRIMARY KEY(`id`)
 );
 
