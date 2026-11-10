@@ -9,6 +9,8 @@ export class Films1794162012602 implements MigrationInterface {
             description VARCHAR(255) NOT NULL,
             logoLink VARCHAR(255),
             trailer_link VARCHAR(255),
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
             PRIMARY KEY(id)
         );
     `);

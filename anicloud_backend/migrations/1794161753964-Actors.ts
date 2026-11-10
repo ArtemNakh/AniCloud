@@ -9,6 +9,8 @@ export class Actors1794161753964 implements MigrationInterface {
             middlename VARCHAR(255) NOT NULL,
             birthday DATE NOT NULL,
             link_photo VARCHAR(255) NULL, 
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
             PRIMARY KEY(id)
 
             

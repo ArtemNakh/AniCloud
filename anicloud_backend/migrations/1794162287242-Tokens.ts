@@ -9,6 +9,8 @@ export class Tokens1794162287242 implements MigrationInterface {
             token VARCHAR(255) NOT NULL,
             type ENUM('refresh-token', 'verify-token') NOT NULL,
             expires_at DATETIME NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             PRIMARY KEY(id)
         );
 

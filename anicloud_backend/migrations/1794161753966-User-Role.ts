@@ -7,6 +7,8 @@ export class UserRole1794159722717 implements MigrationInterface {
             id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
             role_id INTEGER UNSIGNED NOT NULL,
             user_id INTEGER UNSIGNED NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
             PRIMARY KEY(id),
 
             CONSTRAINT fk_user_role_user 

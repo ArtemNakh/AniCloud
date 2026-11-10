@@ -6,6 +6,8 @@ export class Roles1794159165410 implements MigrationInterface {
         CREATE TABLE IF NOT EXISTS roles ( 
         id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL UNIQUE,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
         PRIMARY KEY (id)
         )
 `);
