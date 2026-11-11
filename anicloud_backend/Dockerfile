@@ -43,7 +43,7 @@ USER node
 
 # Запускаємо додаток через dumb-init та вказуємо правильний шлях до компіляту NestJS
 # CMD [ "dumb-init", "node", "dist/main.js"]
-CMD ["sh", "-c", "echo '🚀 Запуск продакшн-сценарію (Production Mode) для AniCloud Backend' && dumb-init node dist/main.js"]
+CMD ["sh", "-c", "echo '🚀 Запуск продакшн-сценарію (Production Mode) для AniCloud Backend' && dumb-init node dist/src/main.js"]
 
 # Передивитися усі логи бекенда 
 # docker compose logs -f backnest
