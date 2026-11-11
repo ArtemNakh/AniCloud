@@ -6,5 +6,3 @@ export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 }
 
-
-Зробити сіди
