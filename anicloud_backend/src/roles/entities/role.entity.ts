@@ -1,12 +1,18 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { IRole } from './role.interface.js';
 
 @Entity('roles')
 export class Role implements IRole {
   @PrimaryGeneratedColumn()
   id: number;
-  
-  @Column({})
+
+  @Column({ nullable: false, unique: true })
   name: string;
 
   @CreateDateColumn({
