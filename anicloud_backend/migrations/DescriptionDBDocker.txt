@@ -1,3 +1,8 @@
 Для запуска міграції у докері
 docker compose exec NAMECONTAINER CONSOLEFUNCITON 
 docker compose exec backnest npm run migration:run
+
+ursus@ursus:~/Projects/AniCloud/anicloud_backend$ docker exec -it anicloud_backend-backnest-1 npx typeorm-ts-node-commonjs schema:log -d dist/configs/DBSource.config.js
+ursus@ursus:~/Projects/AniCloud/anicloud_backend$ 
+
+docker exec -it anicloud_backend-backnest-1 npx typeorm-ts-node-commonjs schema:log -d configs/DBSource.config.ts

@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { IActor } from './actor.interface.js';
-
 @Entity('actors')
 export class Actor implements IActor {
   @PrimaryGeneratedColumn()

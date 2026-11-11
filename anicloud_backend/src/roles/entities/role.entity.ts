@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IRole } from './role.interface.js';
+import { User } from '../../users/entities/user.entity.js';
 
 @Entity('roles')
 export class Role implements IRole {
@@ -14,6 +16,9 @@ export class Role implements IRole {
 
   @Column({ nullable: false, unique: true })
   name: string;
+
+  @ManyToMany(() => User, (user) => user.roles)
+  users: User[];
 
   @CreateDateColumn({
     name: 'created_at',
