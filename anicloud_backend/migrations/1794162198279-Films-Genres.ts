@@ -8,7 +8,7 @@ export class FilmsGenres1794162198279 implements MigrationInterface {
                 film_id INTEGER UNSIGNED NOT NULL,
                 genre_id INTEGER UNSIGNED NOT NULL,
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY(id),
 
                 CONSTRAINT fk_films_genres_film 

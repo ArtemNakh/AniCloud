@@ -8,7 +8,7 @@ export class Genres1794161952998 implements MigrationInterface {
             name VARCHAR(255) NOT NULL UNIQUE,
             description VARCHAR(255) NOT NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  
             PRIMARY KEY(id)
         );
     `);

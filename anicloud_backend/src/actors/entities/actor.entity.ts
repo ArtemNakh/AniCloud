@@ -23,7 +23,7 @@ export class Actor implements IActor {
   @Column({ nullable: false })
   birthday: Date;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   linkPhoto?: string | undefined;
 
   @CreateDateColumn({

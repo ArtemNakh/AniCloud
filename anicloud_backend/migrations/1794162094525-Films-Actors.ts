@@ -9,7 +9,7 @@ export class FilmsActors1794162094525 implements MigrationInterface {
             actor_id INTEGER UNSIGNED NOT NULL,
             crew_role VARCHAR(255) NOT NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP    
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,    
             PRIMARY kEY(id),
 
             
