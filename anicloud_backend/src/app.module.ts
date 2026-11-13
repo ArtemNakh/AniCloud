@@ -18,7 +18,7 @@ import { TokensModule } from './tokens/tokens.module.js';
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: () => ({
         ...AppDataSource.options,
       }),
     }),

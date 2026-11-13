@@ -29,4 +29,4 @@ async function bootstrap() {
   console.log('app port', port);
   await app.listen(port);
 }
-bootstrap();
+void bootstrap();
