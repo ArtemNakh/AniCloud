@@ -2,10 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IGenre } from './genre.interface.js';
+import { Film } from '../../films/entities/film.entity.js';
+import { IFilm } from '../../films/entities/film.interface.js';
 
 @Entity('genres')
 export class Genre implements IGenre {
@@ -17,6 +20,9 @@ export class Genre implements IGenre {
 
   @Column({ nullable: false })
   description: string;
+
+  @ManyToMany(() => Film, (film) => film.genres)
+  films?: IFilm[] | undefined;
 
   @CreateDateColumn({
     name: 'created_at',

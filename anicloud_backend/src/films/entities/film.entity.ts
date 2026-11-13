@@ -11,6 +11,8 @@ import {
 import { IFilm } from './film.interface.js';
 import { Actor } from '../../actors/entities/actor.entity.js';
 import { IActor } from '../../actors/entities/actor.interface.js';
+import { IGenre } from '../../genres/entities/genre.interface.js';
+import { Genre } from '../../genres/entities/genre.entity.js';
 
 @Entity('films')
 export class Film implements IFilm {
@@ -36,6 +38,14 @@ export class Film implements IFilm {
     inverseJoinColumn: { name: 'actor_id', referencedColumnName: 'id' },
   })
   actors?: IActor[] | undefined;
+
+  @ManyToMany(() => Genre, (genre) => genre.films, { cascade: true })
+  @JoinTable({
+    name: 'films_genres',
+    joinColumn: { name: 'film_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'genre_id', referencedColumnName: 'id' },
+  })
+  genres?: IGenre[] | undefined;
 
   @CreateDateColumn({
     name: 'created_at',

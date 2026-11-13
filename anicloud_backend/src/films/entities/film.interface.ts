@@ -1,4 +1,5 @@
 import { IActor } from '../../actors/entities/actor.interface.js';
+import { IGenre } from '../../genres/entities/genre.interface.js';
 
 export interface IFilm {
   id: number;
@@ -10,4 +11,5 @@ export interface IFilm {
   updatedAt: Date;
 
   actors?: IActor[] | undefined;
+  genres?: IGenre[] | undefined;
 }

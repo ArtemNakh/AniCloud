@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { IRole } from './role.interface.js';
 import { User } from '../../users/entities/user.entity.js';
+import { IUser } from '../../users/entities/user.interface.js';
 
 @Entity('roles')
 export class Role implements IRole {
@@ -18,9 +19,8 @@ export class Role implements IRole {
   name: string;
 
   @ManyToMany(() => User, (user) => user.roles)
-  users: User[];
+  users: IUser[] | undefined;
 
-  
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
