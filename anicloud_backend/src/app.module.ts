@@ -9,6 +9,7 @@ import { ActorsModule } from './actors/actors.module.js';
 import { AppDataSource } from '../configs/DBSource.config.js';
 import { GenresModule } from './genres/genres.module.js';
 import { FilmsModule } from './films/films.module.js';
+import { TokensModule } from './tokens/tokens.module.js';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { FilmsModule } from './films/films.module.js';
     ActorsModule,
     GenresModule,
     FilmsModule,
+    TokensModule,
   ],
   controllers: [AppController],
   providers: [AppService],
