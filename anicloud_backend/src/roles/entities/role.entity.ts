@@ -20,6 +20,7 @@ export class Role implements IRole {
   @ManyToMany(() => User, (user) => user.roles)
   users: User[];
 
+  
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',

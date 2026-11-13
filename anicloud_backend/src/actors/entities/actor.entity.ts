@@ -2,10 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IActor } from './actor.interface.js';
+import { Film } from '../../films/entities/film.entity.js';
+import { IFilm } from '../../films/entities/film.interface.js';
 @Entity('actors')
 export class Actor implements IActor {
   @PrimaryGeneratedColumn()
@@ -25,6 +28,9 @@ export class Actor implements IActor {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   linkPhoto?: string | undefined;
+
+  @ManyToMany(() => Film, (film) => film.actors)
+  films?: IFilm[] | undefined;
 
   @CreateDateColumn({
     name: 'created_at',
