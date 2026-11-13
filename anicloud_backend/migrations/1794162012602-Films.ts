@@ -7,8 +7,8 @@ export class Films1794162012602 implements MigrationInterface {
             id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
             title VARCHAR(255) NOT NULL,
             description VARCHAR(255) NOT NULL,
-            logoLink VARCHAR(255),
-            trailer_link VARCHAR(255),
+            logoLink VARCHAR(255) NULL DEFAULT NULL,
+            trailer_link VARCHAR(255) NULL DEFAULT NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  
             PRIMARY KEY(id)
