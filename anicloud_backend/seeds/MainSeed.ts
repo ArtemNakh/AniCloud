@@ -2,6 +2,9 @@ import { AppDataSource } from '../configs/DBSource.config.ts';
 import { SeedManager } from './SeedManager.ts';
 import { TypeOrmAdapter } from './Typeorm.adapter.ts';
 import { seedActors } from './seedsFN/actors.seed.ts';
+import { seedFilmsActors } from './seedsFN/films-actors.seed.ts';
+import { seedFilmsGenres } from './seedsFN/films-genres.seed.ts';
+import { seedFilms } from './seedsFN/films.seed.ts';
 import { seedGenres } from './seedsFN/genres.seed.ts';
 import { seedRoles } from './seedsFN/roles.seed.ts';
 import { seedUserRoles } from './seedsFN/user-role.seed.ts';
@@ -161,5 +164,114 @@ seeder.addSeed('Genres Count', seedGenres, 8);
 //     name: `CustomGenre_${index + 1}`,
 //   }),
 // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// films ---------------------------------------------
+
+// Варіант 1: Базовий (згенерує 10 випадкових фільмів)
+// seeder.addSeed('Films Default', seedFilms, {});
+
+// Варіант 2: Передати просто число (кількість)
+seeder.addSeed('Films Count', seedFilms, 5);
+
+// // Варіант 3: Статичні фільми (реальні або тестові дані)
+// seeder.addSeed('Films Static', seedFilms, {
+//   staticFilms: [
+//     {
+//       title: 'AniCloud Origin',
+//       description: 'The first official release story of the platform.',
+//       logoLink: 'https://example.com/logo1.png',
+//       trailer_link: 'https://youtube.com/watch?v=example1',
+//     },
+//   ],
+// });
+
+// // Варіант 4: Детермінована генерація з кастомним генератором
+// seeder.addSeed('Films Custom', seedFilms, {
+//   count: 3,
+//   fakerSeed: 777,
+//   customGenerator: (index: number) => ({
+//     title: `Anime Movie Vol. ${index + 1}`,
+//   }),
+// });
+
+
+
+
+
+
+
+// films-actors-------------------------------------------------
+// --- ВАРІАНТИ ВИКЛИКУ ДЛЯ FILMS_ACTORS ---
+
+// Варіант 1: Автоматична генерація 15 випадкових зв'язків (автоматично визначить межі ID фільмів і акторів)
+seeder.addSeed('FilmsActors Default', seedFilmsActors, 15);
+
+// // Варіант 2: Статичні зв'язки (прив'язка конкретних акторів до конкретних фільмів із ролями)
+// seeder.addSeed('FilmsActors Static', seedFilmsActors, {
+//   staticRelations: [
+//     { filmId: 1, actorId: 1, crewRole: 'Main Hero' },
+//     { filmId: 1, actorId: 2, crewRole: 'Villain' },
+//     { filmId: 2, actorId: 1, crewRole: 'Supporting Role' },
+//   ],
+//   onDuplicate: 'ignore',
+// });
+
+// // Варіант 3: Детермінована генерація через fakerSeed з кастомною логікою
+// seeder.addSeed('FilmsActors Custom', seedFilmsActors, {
+//   count: 5,
+//   fakerSeed: 333,
+//   customGenerator: (index: number) => ({
+//     filmId: 1, // Прив'язуємо всіх до фільму з ID = 1
+//     actorId: index + 1, // По черзі додаємо акторів 1, 2, 3, 4, 5
+//     crewType: 'Background Cast',
+//   } as any),
+// });
+
+
+
+
+
+
+
+
+// films-genres ------------------------------------------------
+// Варіант 1: Автоматична генерація 15 випадкових зв'язків (автоматично визначить межі ID фільмів і жанрів)
+seeder.addSeed('FilmsGenres Default', seedFilmsGenres, 15);
+
+//// Варіант 2: Статичні зв'язки (прив'язка конкретних жанрів до фільмів)
+// seeder.addSeed('FilmsGenres Static', seedFilmsGenres, {
+//   staticRelations: [
+//     { filmId: 1, genreId: 1 }, // Фільм 1 -> Жанр 1
+//     { filmId: 1, genreId: 2 }, // Фільм 1 -> Жанр 2 (у фільма може бути кілька жанрів)
+//     { filmId: 2, genreId: 3 }, // Фільм 2 -> Жанр 3
+//   ],
+//   onDuplicate: 'ignore',
+// });
+
+// // Варіант 3: Детермінована генерація через fakerSeed з кастомною логікою
+// seeder.addSeed('FilmsGenres Custom', seedFilmsGenres, {
+//   count: 5,
+//   fakerSeed: 555,
+//   customGenerator: (index: number) => ({
+//     filmId: index + 1, // По черзі зв'язуємо фільми з ID 1, 2, 3, 4, 5
+//     genreId: 1,        // Надаємо всім їм загальний жанр з ID = 1
+//   }),
+// });
+
 
 seeder.execute();
