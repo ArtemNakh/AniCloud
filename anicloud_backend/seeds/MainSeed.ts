@@ -3,6 +3,7 @@ import { SeedManager } from './SeedManager.ts';
 import { TypeOrmAdapter } from './Typeorm.adapter.ts';
 import { seedActors } from './seedsFN/actors.seed.ts';
 import { seedRoles } from './seedsFN/roles.seed.ts';
+import { seedUserRoles } from './seedsFN/user-role.seed.ts';
 import { seedUsers } from './seedsFN/users.seed.ts';
 
 // docker compose exec backnest npx ts-node seeds/MainSeed.ts
@@ -53,9 +54,6 @@ const seeder = new SeedManager(dbAdapter);
 //   }),
 // });
 
-
-
-
 //actors
 // seeder.addSeed('Actors Default', seedActors);
 seeder.addSeed('Actors Count', seedActors, 25); // Згенерує 25 акторів
@@ -99,10 +97,36 @@ seeder.addSeed('Actors Count', seedActors, 25); // Згенерує 25 акто�
 //     surname: `ActorSurname_${index + 1}`,
 //     link_photo: `https://example.com/photos/actor_${index + 1}.jpg`,
 //   }),
-// }); 
+// });
 
 
 
 
+
+
+// / --- ВАРІАНТИ ВИКЛИКУ ДЛЯ ЗВ'ЯЗКІВ (USER_ROLE) ---
+
+// Варіант 1: Автоматична генерація 15 випадкових зв'язків (автоматично визначить межі ID з баз users та roles)
+seeder.addSeed('UserRoles Default', seedUserRoles, 15);
+
+// // Варіант 2: Статичні зв'язки (наприклад, жорстко прив'язати користувача з ID = 1 до ролі ID = 1 [Admin])
+// seeder.addSeed('UserRoles Static', seedUserRoles, {
+//   staticRelations: [
+//     { userId: 1, roleId: 1 }, // Admin user
+//     { userId: 1, roleId: 2 }, // User role for same admin
+//     { userId: 2, roleId: 2 }, // Regular user
+//   ],
+//   onDuplicate: 'ignore',
+// });
+
+// // Варіант 3: Детермінована генерація через fakerSeed з кастомною логікою
+// seeder.addSeed('UserRoles Custom Generator', seedUserRoles, {
+//   count: 5,
+//   fakerSeed: 42,
+//   customGenerator: (index: number) => ({
+//     userId: index + 1, // Прив'язуємо по черзі користувачів з ID 1, 2, 3, 4, 5
+//     roleId: 2, // Всім їм даємо роль ID = 2 (наприклад, "User")
+//   }),
+// });
 
 seeder.execute();
