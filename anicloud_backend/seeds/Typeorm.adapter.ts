@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { IDbAdapter } from './IDBAdapter';
+import type { IDbAdapter } from './IDbAdapter.ts';
 
 /**
  * TypeORM implementation of the database adapter interface.
@@ -7,12 +7,16 @@ import { IDbAdapter } from './IDBAdapter';
  * and client access across different database implementations.
  */
 export class TypeOrmAdapter implements IDbAdapter<DataSource> {
+  private readonly dataSource: DataSource;
+
   /**
    * Creates an instance of TypeOrmAdapter.
    *
-   * @param dataSource - Configured TypeORM DataSource instance responsible for database operations.
+   * @param dataSource - TypeORM DataSource instance responsible for database operations.
    */
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(dataSource: DataSource) {
+    this.dataSource = dataSource;
+  }
 
   /**
    * Initializes the TypeORM DataSource connection and opens the connection pool.

@@ -1,12 +1,4 @@
-/**
- * Universal interface for database connection and lifecycle management.
- * Allows decoupling the SeedManager from any specific ORM (TypeORM, Prisma, Sequelize, etc.).
- */
-export interface IDbAdapter {
-  connect(): Promise<void>;
-  disconnect(): Promise<void>;
-  getClient(): any;
-}
+import type { IDbAdapter } from './IDbAdapter.ts';
 
 /**
  * Signature for a seed function.
