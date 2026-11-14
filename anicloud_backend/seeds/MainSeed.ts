@@ -2,6 +2,7 @@ import { AppDataSource } from '../configs/DBSource.config.ts';
 import { SeedManager } from './SeedManager.ts';
 import { TypeOrmAdapter } from './Typeorm.adapter.ts';
 import { seedActors } from './seedsFN/actors.seed.ts';
+import { seedGenres } from './seedsFN/genres.seed.ts';
 import { seedRoles } from './seedsFN/roles.seed.ts';
 import { seedUserRoles } from './seedsFN/user-role.seed.ts';
 import { seedUsers } from './seedsFN/users.seed.ts';
@@ -12,7 +13,7 @@ const seeder = new SeedManager(dbAdapter);
 
 // seeder.addSeed('Roles Seeder', seedRoles, ['Admin']);
 
-// Users
+// Users---------------------------------------------------------------
 // --- ОБЕРІТЬ ОДИН ІЗ ВАРІАНТІВ ВИКЛИКУ ДЛЯ USERS ---
 
 // Варіант 1: Базовий (згенерує 10 випадкових користувачів за замовчуванням)
@@ -54,7 +55,7 @@ const seeder = new SeedManager(dbAdapter);
 //   }),
 // });
 
-//actors
+//actors -----------------------------------------------------------------
 // seeder.addSeed('Actors Default', seedActors);
 seeder.addSeed('Actors Count', seedActors, 25); // Згенерує 25 акторів
 // seeder.addSeed('Actors Static', seedActors, {
@@ -99,12 +100,7 @@ seeder.addSeed('Actors Count', seedActors, 25); // Згенерує 25 акто�
 //   }),
 // });
 
-
-
-
-
-
-// / --- ВАРІАНТИ ВИКЛИКУ ДЛЯ ЗВ'ЯЗКІВ (USER_ROLE) ---
+// / --- ВАРІАНТИ ВИКЛИКУ ДЛЯ ЗВ'ЯЗКІВ (USER_ROLE) ----------------------------------------------------
 
 // Варіант 1: Автоматична генерація 15 випадкових зв'язків (автоматично визначить межі ID з баз users та roles)
 seeder.addSeed('UserRoles Default', seedUserRoles, 15);
@@ -126,6 +122,43 @@ seeder.addSeed('UserRoles Default', seedUserRoles, 15);
 //   customGenerator: (index: number) => ({
 //     userId: index + 1, // Прив'язуємо по черзі користувачів з ID 1, 2, 3, 4, 5
 //     roleId: 2, // Всім їм даємо роль ID = 2 (наприклад, "User")
+//   }),
+// });
+
+// ---------------------------------------------------------------------------------
+// --- ВАРІАНТИ ВИКЛИКУ ДЛЯ GENRES ---
+
+// Варіант 1: Базовий (згенерує 10 випадкових жанрів)
+// seeder.addSeed('Genres Default', seedGenres, {});
+
+// Варіант 2: Передати просто число (кількість)
+seeder.addSeed('Genres Count', seedGenres, 8);
+
+// // Варіант 3: Статичні жанри (обов'язкові базові жанри для аніме/фільмів)
+// seeder.addSeed('Genres Static', seedGenres, {
+//   staticGenres: [
+//     {
+//       name: 'Action',
+//       description: 'Fast-paced shows with lots of fights and physical feats.',
+//     },
+//     {
+//       name: 'Drama',
+//       description: 'Focuses on emotional themes and character development.',
+//     },
+//     {
+//       name: 'Comedy',
+//       description: 'Light-hearted shows designed to make the audience laugh.',
+//     },
+//   ],
+//   onDuplicate: 'ignore', // Пропускати, якщо такий жанр вже є
+// });
+
+// // Варіант 4: Детермінована генерація з кастомним генератором
+// seeder.addSeed('Genres Custom', seedGenres, {
+//   count: 5,
+//   fakerSeed: 99,
+//   customGenerator: (index: number) => ({
+//     name: `CustomGenre_${index + 1}`,
 //   }),
 // });
 
