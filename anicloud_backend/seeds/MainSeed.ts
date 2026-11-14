@@ -14,7 +14,11 @@ import { seedUsers } from './seedsFN/users.seed.ts';
 const dbAdapter = new TypeOrmAdapter(AppDataSource);
 const seeder = new SeedManager(dbAdapter);
 
-// seeder.addSeed('Roles Seeder', seedRoles, ['Admin']);
+seeder.addSeed('Roles Seeder', seedRoles, [
+  'ADMIN_CONTENT',
+  'ADMIN_CHAT',
+  'ADMIN_USER',
+]);
 
 // Users---------------------------------------------------------------
 // --- ОБЕРІТЬ ОДИН ІЗ ВАРІАНТІВ ВИКЛИКУ ДЛЯ USERS ---
@@ -26,7 +30,7 @@ const seeder = new SeedManager(dbAdapter);
 // });
 
 // // Варіант 2: Передати просто кількість (як було раніше)
-// seeder.addSeed('Users Seeder (Count only)', seedUsers, 25);
+seeder.addSeed('Users Seeder (Count only)', seedUsers, 25);
 
 // // Варіант 3: Комбінований (створити тестового адміна + 15 випадкових юзерів зі спільним паролем)
 // seeder.addSeed('Users Seeder (Dev setup)', seedUsers, {
@@ -165,21 +169,6 @@ seeder.addSeed('Genres Count', seedGenres, 8);
 //   }),
 // });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // films ---------------------------------------------
 
 // Варіант 1: Базовий (згенерує 10 випадкових фільмів)
@@ -209,12 +198,6 @@ seeder.addSeed('Films Count', seedFilms, 5);
 //   }),
 // });
 
-
-
-
-
-
-
 // films-actors-------------------------------------------------
 // --- ВАРІАНТИ ВИКЛИКУ ДЛЯ FILMS_ACTORS ---
 
@@ -242,13 +225,6 @@ seeder.addSeed('FilmsActors Default', seedFilmsActors, 15);
 //   } as any),
 // });
 
-
-
-
-
-
-
-
 // films-genres ------------------------------------------------
 // Варіант 1: Автоматична генерація 15 випадкових зв'язків (автоматично визначить межі ID фільмів і жанрів)
 seeder.addSeed('FilmsGenres Default', seedFilmsGenres, 15);
@@ -272,6 +248,5 @@ seeder.addSeed('FilmsGenres Default', seedFilmsGenres, 15);
 //     genreId: 1,        // Надаємо всім їм загальний жанр з ID = 1
 //   }),
 // });
-
 
 seeder.execute();
