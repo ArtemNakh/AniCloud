@@ -1,4 +1,5 @@
 import { AppDataSource } from '../configs/DBSource.config.ts';
+import { Permission } from '../src/lib/common/permissions.enum.ts';
 import { SeedManager } from './SeedManager.ts';
 import { TypeOrmAdapter } from './Typeorm.adapter.ts';
 import { seedActors } from './seedsFN/actors.seed.ts';
@@ -6,6 +7,8 @@ import { seedFilmsActors } from './seedsFN/films-actors.seed.ts';
 import { seedFilmsGenres } from './seedsFN/films-genres.seed.ts';
 import { seedFilms } from './seedsFN/films.seed.ts';
 import { seedGenres } from './seedsFN/genres.seed.ts';
+import { seedPermissions } from './seedsFN/permissions.seed.ts';
+import { seedRolePermissions } from './seedsFN/roles-permissions.seed.ts';
 import { seedRoles } from './seedsFN/roles.seed.ts';
 import { seedUserRoles } from './seedsFN/user-role.seed.ts';
 import { seedUsers } from './seedsFN/users.seed.ts';
@@ -249,4 +252,155 @@ seeder.addSeed('FilmsGenres Default', seedFilmsGenres, 15);
 //   }),
 // });
 
+
+
+
+
+
+// Permissions ---------------------------------------------------------
+// --- ОБЕРІТЬ ОДИН ІЗ ВАРІАНТІВ ВИКЛИКУ ДЛЯ PERMISSIONS ---
+
+// Варіант 1: Базовий (автоматично візьме всі права з enum Permission зі стандартними описами)
+seeder.addSeed('Permissions Seeder (Default Enum)', seedPermissions);
+
+// // Варіант 2: Передати масив конкретних значень з enum або рядків напряму
+// seeder.addSeed('Permissions Seeder (Array Shorthand)', seedPermissions, [
+//   Permission.USERS_READ,
+//   Permission.USERS_CREATE,
+// ]);
+
+// // Варіант 3: Передати масив об'єктів з описами напряму (ігнорує enum)
+// seeder.addSeed('Permissions Seeder (Objects Array)', seedPermissions, [
+//   { name: 'billing:read', description: 'Перегляд рахунків' },
+//   { name: 'billing:pay', description: 'Оплата рахунків' },
+// ]);
+
+// // Варіант 4: Enum з кастомними описами та оновленням існуючих записів у БД
+// seeder.addSeed('Permissions Seeder (Custom Descriptions)', seedPermissions, {
+//   useEnum: true,
+//   onDuplicate: 'update',
+//   enumDescriptions: {
+//     [Permission.USERS_READ]: 'Перегляд списку та профілів користувачів',
+//     [Permission.USERS_CREATE]: 'Створення нових користувачів',
+//     [Permission.USERS_DELETE]: 'Видалення користувачів із системи',
+//     [Permission.ROLES_MANAGE]: 'Повне керування ролями та правами доступу',
+//   },
+// });
+
+// // Варіант 5: Enum за винятком окремих прав
+// seeder.addSeed('Permissions Seeder (Exclude)', seedPermissions, {
+//   useEnum: true,
+//   excludeFromEnum: [Permission.USERS_DELETE],
+// });
+
+// // Варіант 6: Комбінований (весь Enum + додаткові статичні права або перезапис опису)
+// seeder.addSeed('Permissions Seeder (Combined)', seedPermissions, {
+//   useEnum: true,
+//   onDuplicate: 'update',
+//   staticPermissions: [
+//     { name: 'content:moderate', description: 'Модерація контенту та коментарів' },
+//     { name: Permission.USERS_READ, description: 'Базовий перегляд профілів' },
+//   ],
+// });
+
+// // Варіант 7: Генерація випадкових дозволів для тестування пагінації / навантаження
+// seeder.addSeed('Permissions Seeder (Random Faker)', seedPermissions, {
+//   useEnum: false,
+//   randomCount: 20,
+//   fakerSeed: 42,
+//   generateDescriptions: true,
+//   customGenerator: (index: number) => ({
+//     name: `test_module:action_${index + 1}`,
+//     description: `Тестовий дозвіл №${index + 1}`,
+//   }),
+// });
+
+// Role-Permissions ----------------------------------------------------
+// --- ОБЕРІТЬ ОДИН ІЗ ВАРІАНТІВ ВИКЛИКУ ДЛЯ ЗВ'ЯЗКІВ (ROLE_PERMISSION) ---
+
+// Варіант 1: Базовий (дефолтний пресет: admin -> ALL_ENUM, user -> USERS_READ)
+// seeder.addSeed('RolePermissions Seeder (Default)', seedRolePermissions);
+
+// // Варіант 2: Передати масив зв'язків напряму (режим 'skip' за замовчуванням)
+seeder.addSeed('RolePermissions Seeder (Anicloud Roles)', seedRolePermissions, [
+  {
+    roleName: 'ADMIN_USER',
+    permissions: [
+      Permission.USERS_READ,
+      Permission.USERS_CREATE,
+      Permission.USERS_DELETE,
+      Permission.ROLES_MANAGE,
+    ],
+  },
+  {
+    roleName: 'ADMIN_CONTENT',
+    permissions: [Permission.USERS_READ],
+  },
+  {
+    roleName: 'ADMIN_CHAT',
+    permissions: [Permission.USERS_READ],
+  },
+]);
+
+// // Варіант 3: Шорткат 'ALL_DB' (дати абсолютно всі права, що є в таблиці permissions)
+// seeder.addSeed('RolePermissions Seeder (All DB)', seedRolePermissions, {
+//   mappings: [
+//     {
+//       roleName: 'ADMIN_USER',
+//       permissions: 'ALL_DB',
+//     },
+//   ],
+// });
+
+// // Варіант 4: Шорткат 'ALL_ENUM' із виключенням окремих прав
+// seeder.addSeed('RolePermissions Seeder (All Enum with Exclude)', seedRolePermissions, {
+//   mappings: [
+//     {
+//       roleName: 'ADMIN_USER',
+//       permissions: 'ALL_ENUM',
+//       excludePermissions: [Permission.USERS_DELETE],
+//     },
+//   ],
+// });
+
+// // Варіант 5: Режим 'sync' (видалить зайві старі права ролі та додасть відсутні)
+// seeder.addSeed('RolePermissions Seeder (Sync)', seedRolePermissions, {
+//   mode: 'sync',
+//   mappings: [
+//     {
+//       roleName: 'ADMIN_USER',
+//       permissions: 'ALL_ENUM',
+//     },
+//     {
+//       roleName: 'ADMIN_CONTENT',
+//       permissions: [Permission.USERS_READ],
+//     },
+//   ],
+// });
+
+// // Варіант 6: Режим 'clear' (повне очищення старих прав ролі перед записом нових або обнулення)
+// seeder.addSeed('RolePermissions Seeder (Clear)', seedRolePermissions, {
+//   mode: 'clear',
+//   mappings: [
+//     {
+//       roleName: 'ADMIN_CHAT',
+//       permissions: [], // Повністю забере всі права у ролі ADMIN_CHAT
+//     },
+//     {
+//       roleName: 'ADMIN_USER',
+//       permissions: [Permission.USERS_READ, Permission.ROLES_MANAGE],
+//     },
+//   ],
+// });
+
+// // Варіант 7: Режим 'skip' (безпечне доповнення: не видаляє права, додані вручну в БД)
+// seeder.addSeed('RolePermissions Seeder (Skip)', seedRolePermissions, {
+//   mode: 'skip',
+//   mappings: [
+//     {
+//       roleName: 'ADMIN_CONTENT',
+//       permissions: [Permission.USERS_READ],
+//     },
+//   ],
+// });
 seeder.execute();

@@ -1,6 +1,7 @@
-import { IRole } from "../../roles/entities/role.interface.js";
+import { IRole } from '../../roles/entities/role.interface.js';
 
-export class IPermission {
+
+export interface IPermission {
   id: number;
   name: string;
   description: string;
