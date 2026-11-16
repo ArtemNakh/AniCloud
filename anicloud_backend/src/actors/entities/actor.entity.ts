@@ -23,10 +23,10 @@ export class Actor implements IActor {
   @Column({ nullable: false })
   middlename: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'date', nullable: false })
   birthday: Date;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true, name: 'link_photo' })
   linkPhoto?: string | undefined;
 
   @ManyToMany(() => Film, (film) => film.actors)
