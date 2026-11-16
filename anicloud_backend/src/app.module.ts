@@ -10,6 +10,7 @@ import { AppDataSource } from '../configs/DBSource.config.js';
 import { GenresModule } from './genres/genres.module.js';
 import { FilmsModule } from './films/films.module.js';
 import { TokensModule } from './tokens/tokens.module.js';
+import { PermissionsModule } from './permissions/permissions.module.js';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TokensModule } from './tokens/tokens.module.js';
     GenresModule,
     FilmsModule,
     TokensModule,
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
