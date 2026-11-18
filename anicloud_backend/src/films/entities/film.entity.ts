@@ -24,10 +24,16 @@ export class Film implements IFilm {
   @Column({ nullable: false })
   description: string;
 
-  @Column({ nullable: true, default: null })
+  @Column({ type: 'varchar', length: 255, nullable: true, default: null })
   logoLink?: string | undefined;
 
-  @Column({ nullable: true, default: null })
+  @Column({
+    name: 'trailer_link',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    default: null,
+  })
   trailerLink?: string | undefined;
 
   @ManyToMany(() => Actor, (actor) => actor.films, { cascade: true })
