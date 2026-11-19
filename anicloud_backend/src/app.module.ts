@@ -11,15 +11,22 @@ import { GenresModule } from './genres/genres.module.js';
 import { FilmsModule } from './films/films.module.js';
 import { TokensModule } from './tokens/tokens.module.js';
 import { PermissionsModule } from './permissions/permissions.module.js';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConfigAsync } from '../configs/JWTModule.config.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+
+    JwtModule.registerAsync(jwtConfigAsync),
+
     TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: () => ({
+      useFactory: (configService: ConfigService) => ({
         ...AppDataSource.options,
       }),
     }),
@@ -31,6 +38,7 @@ import { PermissionsModule } from './permissions/permissions.module.js';
     FilmsModule,
     TokensModule,
     PermissionsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
