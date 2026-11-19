@@ -44,11 +44,6 @@ export class UsersService {
       throw new ConflictException('User with same email already exist');
     }
 
-    // 2. Хешуємо пароль (рекомендовано використовувати 10 раундів солі)
-    const hashedPassword = await this.hashService.hashBcripto(
-      createUserDto.password,
-    );
-
     // await bcrypt.hash(
     //   createUserDto.password,
     //   saltRounds,
@@ -58,7 +53,6 @@ export class UsersService {
     const newUser = await this.userRepository.create({
       ...createUserDto,
       email: normalizedEmail,
-      password: hashedPassword,
     });
 
     // 4. Зберігаємо в базу даних

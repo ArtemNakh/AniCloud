@@ -5,9 +5,9 @@ import {
   ITokenPayload,
   ITokenService,
 } from './interfaces/TokensProvider.interface.js';
-
 @Injectable()
 export class TokenProvider implements ITokenService {
+  private readonly accessSecret: string;
   private readonly refreshSecret: string;
   private readonly accessExpiresIn: string;
   private readonly refreshExpiresIn: string;
@@ -16,7 +16,12 @@ export class TokenProvider implements ITokenService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {
-    // 1. Валідація та зчитування секретів
+    const accessSecret = this.configService.get<string>('JWT_SECRET');
+    if (!accessSecret) {
+      throw new Error('JWT_SECRET is not defined in environment variables!');
+    }
+    this.accessSecret = accessSecret;
+
     const refreshSecret = this.configService.get<string>('JWT_REFRESH_SECRET');
     if (!refreshSecret) {
       throw new Error(
@@ -25,25 +30,19 @@ export class TokenProvider implements ITokenService {
     }
     this.refreshSecret = refreshSecret;
 
-    // 2. Зчитування часу життя з env із дефолтними значеннями (fallback)
     this.accessExpiresIn =
       this.configService.get<string>('JWT_ACCESS_EXPIRES_IN') || '15m';
     this.refreshExpiresIn =
       this.configService.get<string>('JWT_REFRESH_EXPIRES_IN') || '7d';
   }
 
-  /**
-   * Генерація Access Token з айді, роллю та дозволами
-   */
   public generateAccessToken(user: ITokenPayload): string {
     return this.jwtService.sign(user, {
+      secret: this.accessSecret,
       expiresIn: this.accessExpiresIn as JwtSignOptions['expiresIn'],
     });
   }
 
-  /**
-   * Генерація Refresh Token
-   */
   public generateRefreshToken(userId: number | string): string {
     const payload = { sub: userId };
     return this.jwtService.sign(payload, {
@@ -62,6 +61,7 @@ export class TokenProvider implements ITokenService {
       throw new UnauthorizedException('Invalid or expired access token');
     }
   }
+
   /**
    * Перевірка Refresh Token
    */

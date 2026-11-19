@@ -8,6 +8,7 @@ export interface IToken {
   email: string;
   token: string;
   type: TokenType;
+  expiresAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -24,6 +24,9 @@ export class Token implements IToken {
   })
   type: TokenType;
 
+  @Column({ name: 'expires_at', type: 'datetime', nullable: false })
+  expiresAt: Date;
+  
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',

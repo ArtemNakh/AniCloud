@@ -4,12 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HashService } from '../lib/common/HashService.js';
 import { TokenType } from './entities/token.interface.js';
+import { ConfigService } from '@nestjs/config';
+import { getExpirationDate } from '../lib/common/getexpirestime.js';
 @Injectable()
 export class TokensService {
   constructor(
     @InjectRepository(Token)
     private readonly tokenRepository: Repository<Token>,
     private readonly hashService: HashService,
+    private readonly configService: ConfigService,
   ) {}
 
   /**
@@ -30,11 +33,18 @@ export class TokensService {
       tokenRecord.token = hashedToken;
       await this.tokenRepository.save(tokenRecord);
     } else {
+      const expiresAt = getExpirationDate(
+        this.configService.get<string>('JWT_REFRESH_EXPIRES_IN'),
+        '7d',
+      );
+
       tokenRecord = this.tokenRepository.create({
         email,
         token: hashedToken,
         type: TokenType.refresh,
+        expiresAt, // Date -> запишеться у DATETIME колонки expires_at
       });
+      console.log('refreshtok', tokenRecord);
       await this.tokenRepository.save(tokenRecord);
     }
   }
@@ -49,12 +59,19 @@ export class TokensService {
     const tokenRecord = await this.tokenRepository.findOne({
       where: { email, type: TokenType.refresh },
     });
+    console.log('tokenrefresh', tokenRecord);
 
     if (!tokenRecord) {
       return false;
     }
 
     const hashedIncomingToken = this.hashService.hashSha256(rawToken);
+    console.log(
+      'tokenrecord===hashed',
+      tokenRecord.token === hashedIncomingToken,
+      '////',
+      hashedIncomingToken,
+    );
     return tokenRecord.token === hashedIncomingToken;
   }
 
