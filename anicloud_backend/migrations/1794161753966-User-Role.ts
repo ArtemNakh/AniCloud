@@ -1,4 +1,4 @@
-import type{ MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class UserRole1794159722717 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -10,7 +10,7 @@ export class UserRole1794159722717 implements MigrationInterface {
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  
             PRIMARY KEY(id),
-
+            CONSTRAINT uq_user_role_user_id_role_id UNIQUE (user_id, role_id),
             CONSTRAINT fk_user_role_user 
             FOREIGN KEY (user_id) REFERENCES users(id) 
             ON DELETE CASCADE ON UPDATE CASCADE,

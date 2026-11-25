@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { HashService } from '../lib/common/HashService.js';
 import { TokenType } from './entities/token.interface.js';
 import { ConfigService } from '@nestjs/config';
-import { getExpirationDate } from '../lib/common/getexpirestime.js';
+import { TokenProvider } from './TokenProvider.js';
+
 @Injectable()
 export class TokensService {
   constructor(
@@ -13,6 +14,7 @@ export class TokensService {
     private readonly tokenRepository: Repository<Token>,
     private readonly hashService: HashService,
     private readonly configService: ConfigService,
+    private readonly tokenProvider: TokenProvider,
   ) {}
 
   /**
@@ -33,7 +35,7 @@ export class TokensService {
       tokenRecord.token = hashedToken;
       await this.tokenRepository.save(tokenRecord);
     } else {
-      const expiresAt = getExpirationDate(
+      const expiresAt = this.tokenProvider.getExpirationDate(
         this.configService.get<string>('JWT_REFRESH_EXPIRES_IN'),
         '7d',
       );

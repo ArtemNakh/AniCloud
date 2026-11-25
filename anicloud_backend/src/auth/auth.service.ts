@@ -25,30 +25,12 @@ export class AuthService {
     if (existingUser) {
       throw new BadRequestException('User with this email already exists');
     }
-
-    // 2. Хешування пароля
-    const hashedPassword = await this.hashService.hashBcripto(dto.password);
-    console.log('pass or', dto.password, '  /hashed:', hashedPassword);
     // 3. Збереження в БД
     const newUser = await this.usersService.createUser({
-      ...dto,
-      password: hashedPassword,
+      username: dto.username,
+      password: dto.password,
+      email: dto.email,
     });
-
-    // 4. Генерація токенів
-    // const payload: ITokenPayload = {
-    //   sub: newUser.id,
-    //   roles: newUser.roles.map((role) => role.name),
-    //   permissions: [
-    //     ...new Set(
-    //       newUser.roles.flatMap((role) =>
-    //         role.permissions
-    //           ? role.permissions.map((permission) => permission.name)
-    //           : [],
-    //       ),
-    //     ),
-    //   ],
-    // };
 
     return {
       user: {
@@ -61,11 +43,10 @@ export class AuthService {
   async login(dto: LoginPayloadDto) {
     // 1. Пошук користувача за email
     const user = await this.usersService.findByEmail(dto.email);
-    console.log('1test/', user);
+
     if (!user) {
       throw new UnauthorizedException('Invalid email or password');
     }
-    console.log('1-fingwertest/', user);
 
     // 2. Порівняння паролів (bcrypt.compare)
     const isPasswordValid = await this.hashService.comparePassword(
@@ -73,40 +54,21 @@ export class AuthService {
       user.password,
     );
 
-    console.log(
-      '2-/2test/',
-      isPasswordValid,
-      '\ndto:',
-      dto.password,
-      '\nuser:',
-      user.password,
-    );
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');
     }
-    console.log('2test');
 
     // 3. Генерація Access та Refresh токенів
     const roles = user.roles?.map((role) => role.name).filter(Boolean) ?? [];
-    const permissions = [
-      ...new Set(
-        (user.roles ?? []).flatMap((role) =>
-          role.permissions
-            ? role.permissions.map((permission) => permission.name)
-            : [],
-        ),
-      ),
-    ];
 
     const payload: ITokenPayload = {
       sub: user.id,
       ...(roles.length > 0 && { roles }),
-      ...(permissions.length > 0 && { permissions }),
     };
-    console.log('3testqw');
+
     const accessToken = this.tokenProvider.generateAccessToken(payload);
     const refreshToken = this.tokenProvider.generateRefreshToken(user.id);
-    console.log('3test');
+
     // 4. Збереження хешу Refresh токена в БД (для безпеки краще зберігати саме хеш)
     const hashedRefreshToken = this.hashService.hashSha256(refreshToken);
     await this.tokensService.saveRefreshToken(user.email, hashedRefreshToken);
@@ -147,15 +109,6 @@ export class AuthService {
     const tokenPayload: ITokenPayload = {
       sub: user.id,
       roles: user.roles.map((role: IRole) => role.name),
-      permissions: [
-        ...new Set(
-          user.roles.flatMap((role: IRole) =>
-            role.permissions
-              ? role.permissions.map((permission) => permission.name)
-              : [],
-          ),
-        ),
-      ],
     };
     const accessToken = this.tokenProvider.generateAccessToken(tokenPayload);
     const newRefreshToken = this.tokenProvider.generateRefreshToken(user.id);

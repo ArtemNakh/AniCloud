@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IRole } from './role.interface.js';
+import { IRole, RoleName } from './role.interface.js';
 import { User } from '../../users/entities/user.entity.js';
 import { IUser } from '../../users/entities/user.interface.js';
 import { Permission } from '../../permissions/entities/permission.entity.js';
@@ -18,13 +18,20 @@ export class Role implements IRole {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, unique: true })
-  name: string;
+  @Column({
+    type: 'varchar',
+    length: 50,
+    nullable: false,
+    unique: true,
+  })
+  name: RoleName;
 
   @ManyToMany(() => User, (user) => user.roles)
   users: IUser[] | undefined;
 
-  @ManyToMany(() => Permission, (permission) =>permission.roles, { cascade: true })
+  @ManyToMany(() => Permission, (permission) => permission.roles, {
+    cascade: true,
+  })
   @JoinTable({
     name: 'roles_permissions',
     joinColumn: { name: 'role_id', referencedColumnName: 'id' },

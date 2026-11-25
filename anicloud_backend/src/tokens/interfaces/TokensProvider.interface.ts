@@ -1,7 +1,6 @@
 export interface ITokenPayload {
   sub: number | string;
   roles?: string[];
-  permissions?: string[];
 }
 
 export interface ITokenService {

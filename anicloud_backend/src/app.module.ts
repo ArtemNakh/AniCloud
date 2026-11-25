@@ -26,7 +26,7 @@ import { AuthModule } from './auth/auth.module.js';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: () => ({
         ...AppDataSource.options,
       }),
     }),

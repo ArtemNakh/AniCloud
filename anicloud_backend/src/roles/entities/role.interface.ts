@@ -3,9 +3,14 @@ import { IUser } from '../../users/entities/user.interface.js';
 
 export interface IRole {
   id: number;
-  name: string;
+  name: RoleName;
   users?: IUser[];
   permissions?: IPermission[] | undefined;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export enum RoleName {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
 }
