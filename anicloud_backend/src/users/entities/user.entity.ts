@@ -15,13 +15,13 @@ export class User implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   username: string;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   password: string;
 
   @ManyToMany(() => Role, (role) => role.users, { cascade: true })

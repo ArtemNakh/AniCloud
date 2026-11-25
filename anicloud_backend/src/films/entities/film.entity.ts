@@ -18,10 +18,10 @@ export class Film implements IFilm {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   title: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   description: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true, default: null })

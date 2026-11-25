@@ -1,4 +1,4 @@
-import type { IDbAdapter } from './IDbAdapter.ts';
+import type { IDbAdapter } from './IDbAdapter';
 
 /**
  * Signature for a seed function.

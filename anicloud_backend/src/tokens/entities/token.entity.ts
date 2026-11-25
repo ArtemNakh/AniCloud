@@ -12,10 +12,10 @@ export class Token implements IToken {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   token: string;
 
   @Column({
@@ -26,7 +26,7 @@ export class Token implements IToken {
 
   @Column({ name: 'expires_at', type: 'datetime', nullable: false })
   expiresAt: Date;
-  
+
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',

@@ -14,13 +14,13 @@ export class Actor implements IActor {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   name: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   surname: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   middlename: string;
 
   @Column({ type: 'date', nullable: false })

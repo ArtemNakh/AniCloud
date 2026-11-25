@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import type { IDbAdapter } from './IDbAdapter.ts';
+import type { IDbAdapter } from './IDbAdapter';
 
 /**
  * TypeORM implementation of the database adapter interface.

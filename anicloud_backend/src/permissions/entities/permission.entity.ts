@@ -15,10 +15,10 @@ export class Permission implements IPermission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
   name: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   description: string;
 
   @ManyToMany(() => Role, (role) => role.permissions)

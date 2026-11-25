@@ -15,10 +15,10 @@ export class Genre implements IGenre {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
   name: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   description: string;
 
   @ManyToMany(() => Film, (film) => film.genres)

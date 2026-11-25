@@ -12,5 +12,7 @@ export interface IRole {
 
 export enum RoleName {
   USER = 'USER',
-  ADMIN = 'ADMIN',
+  ADMINCONTENT = 'ADMIN_CONTENT',
+  ADMINCHATS = 'ADMIN_CHATS',
+  ADMINUSER = 'ADMIN_USER',
 }
