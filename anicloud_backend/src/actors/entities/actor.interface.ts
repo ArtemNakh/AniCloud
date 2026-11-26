@@ -6,6 +6,8 @@ export interface IActor {
   surname: string;
   middlename: string;
   birthday: Date;
+
+  /**Link on photo in cloud storage  */
   linkPhoto?: string;
   createdAt: Date;
   updatedAt: Date;

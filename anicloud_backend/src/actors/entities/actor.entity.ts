@@ -9,6 +9,7 @@ import {
 import { IActor } from './actor.interface.js';
 import { Film } from '../../films/entities/film.entity.js';
 import { IFilm } from '../../films/entities/film.interface.js';
+
 @Entity('actors')
 export class Actor implements IActor {
   @PrimaryGeneratedColumn()
