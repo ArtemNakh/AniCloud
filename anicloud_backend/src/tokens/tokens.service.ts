@@ -46,8 +46,7 @@ export class TokensService {
         type: TokenType.refresh,
         expiresAt, // Date -> запишеться у DATETIME колонки expires_at
       });
-      
-      console.log('refreshtok', tokenRecord);
+
       await this.tokenRepository.save(tokenRecord);
     }
   }
@@ -62,19 +61,13 @@ export class TokensService {
     const tokenRecord = await this.tokenRepository.findOne({
       where: { email, type: TokenType.refresh },
     });
-    console.log('tokenrefresh', tokenRecord);
-
+    
     if (!tokenRecord) {
       return false;
     }
 
     const hashedIncomingToken = this.hashService.hashSha256(rawToken);
-    console.log(
-      'tokenrecord===hashed',
-      tokenRecord.token === hashedIncomingToken,
-      '////',
-      hashedIncomingToken,
-    );
+   
     return tokenRecord.token === hashedIncomingToken;
   }
 

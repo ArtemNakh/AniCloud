@@ -70,8 +70,7 @@ export class AuthService {
     const refreshToken = this.tokenProvider.generateRefreshToken(user.id);
 
     // 4. Збереження хешу Refresh токена в БД (для безпеки краще зберігати саме хеш)
-    const hashedRefreshToken = this.hashService.hashSha256(refreshToken);
-    await this.tokensService.saveRefreshToken(user.email, hashedRefreshToken);
+    await this.tokensService.saveRefreshToken(user.email, refreshToken);
 
     // 5. Повернення токенів та даних користувача
     return {
@@ -89,7 +88,9 @@ export class AuthService {
     const payload = this.tokenProvider.verifyRefreshToken(oldRefreshToken);
     console.log('payload', payload);
     // 2. Пошук користувача в базі та перевірка наявності рефреш-токена
-    const user = await this.usersService.findById(Number(payload.sub));
+    const user = await this.usersService.findById(Number(payload.sub), {
+      relations: { roles: true },
+    });
     console.log('user', user);
     if (!user) {
       throw new UnauthorizedException('Access Denied');
