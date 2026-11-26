@@ -13,8 +13,21 @@ import { UserResponseDto } from './dto/services/UserResponse.dto.js';
 import { HashService } from '../lib/common/HashService.js';
 import { RolesService } from '../roles/roles.service.js';
 
+/**
+ * Manages user queries and transactional account creation, including password hashing
+ * and default role assignment.
+ */
 @Injectable()
 export class UsersService {
+  /**
+   * Initializes `UsersService` with repository, hashing, transaction data source,
+   * and role assignment dependencies.
+   *
+   * @param userRepository - TypeORM repository for {@link User} entities.
+   * @param hashService - Service used to hash plain-text passwords before persistence.
+   * @param dataSource - TypeORM `DataSource` used to run user and role creation in a transaction.
+   * @param rolesService - Service responsible for assigning default roles to newly created users.
+   */
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -23,6 +36,12 @@ export class UsersService {
     private readonly rolesService: RolesService,
   ) {}
 
+  /**
+   * Finds a user by email address after normalizing casing and surrounding whitespace.
+   *
+   * @param email - Raw or normalized user email address.
+   * @returns A promise resolving to the matching {@link IUser}, or `null` if not found.
+   */
   async findByEmail(email: string): Promise<IUser | null> {
     // 1. Нормалізація email (захист від регістру "Test@gmail.com" та пробілів)
     const normalizedEmail = email.toLowerCase().trim();
@@ -32,7 +51,14 @@ export class UsersService {
       where: { email: normalizedEmail },
     });
   }
-
+  
+  /**
+   * Finds a user by numeric ID with optional TypeORM relations and field selection.
+   *
+   * @param userId - Primary key identifier of the user.
+   * @param options - Optional query modifiers for relations (`relations`) and selected columns (`select`).
+   * @returns A promise resolving to the matching {@link IUser}, or `null` if not found.
+   */
   async findById(
     userId: number,
     options?: {
