@@ -9,9 +9,20 @@ import { TokensService } from '../tokens/tokens.service.js';
 import { IRole } from '../roles/entities/role.interface.js';
 import { LoginPayloadDto } from './dto/service/Login.payload.dto.js';
 
+/**
+ * Handles authentication flows including user registration, credential login,
+ * refresh token rotation, and logout.
+ */
 @Injectable()
 export class AuthService {
-  // Залежності передаються через конструктор (Dependency Injection)
+  /**
+   * Initializes `AuthService`
+   *
+   * @param tokenProvider - Service responsible for signing and verifying access and refresh tokens.
+   * @param hashService - Service used to compare plain-text passwords against stored hashes.
+   * @param usersService - Service for querying and creating user accounts.
+   * @param tokensService - Service managing persisted refresh tokens/sessions.
+   */
   constructor(
     private readonly tokenProvider: TokenProvider,
     private readonly hashService: HashService,
@@ -19,6 +30,16 @@ export class AuthService {
     private readonly tokensService: TokensService,
   ) {}
 
+  /**
+   * Registers a new user account if the email address is not already taken.
+   *
+   * Checks for an existing user by email, delegates user creation to `UsersService`,
+   * and returns basic profile data for the newly created account.
+   *
+   * @param dto - Payload containing registration details (`username`, `password`, `email`).
+   * @returns A promise resolving to an object with the created user's `id` and `email`.
+   * @throws {BadRequestException} If a user with the given email already exists.
+   */
   async register(dto: RegisterPayloadDto) {
     // 1. Перевірка, чи існує користувач
     const existingUser = await this.usersService.findByEmail(dto.email);
@@ -40,6 +61,16 @@ export class AuthService {
     };
   }
 
+  /**
+   * Authenticates a user by email and password and issues token pairs.
+   *
+   * Verifies user existence and password match, generates access and refresh tokens,
+   * persists the refresh token via `TokensService`, and returns tokens with user details.
+   *
+   * @param dto - Payload containing login credentials (`email` and `password`).
+   * @returns A promise resolving to `accessToken`, `refreshToken`, and basic `user` info.
+   * @throws {UnauthorizedException} If the user does not exist or the password is invalid.
+   */
   async login(dto: LoginPayloadDto) {
     // 1. Пошук користувача за email
     const user = await this.usersService.findByEmail(dto.email);
@@ -83,6 +114,18 @@ export class AuthService {
     };
   }
 
+  /**
+   * Rotates authentication tokens using a valid refresh token.
+   *
+   * Verifies the incoming refresh token signature, loads the user with roles,
+   * validates the token against the stored hash, issues a new access/refresh pair,
+   * and saves the replacement refresh token.
+   *
+   * @param oldRefreshToken - Refresh token to verify and rotate.
+   * @returns A promise resolving to the newly issued `accessToken` and `refreshToken`.
+   * @throws {UnauthorizedException} If the token is invalid/expired, the user is not found,
+   * or the token does not match the stored token hash.
+   */
   async refreshTokens(oldRefreshToken: string) {
     // 1. Верифікація старого рефреш-токена (TokenService викине UnauthorizedException, якщо він невалідний)
     const payload = this.tokenProvider.verifyRefreshToken(oldRefreshToken);
@@ -120,6 +163,12 @@ export class AuthService {
     return { accessToken, refreshToken: newRefreshToken };
   }
 
+  /**
+   * Logs out a user by removing their stored refresh token.
+   *
+   * @param email - Email address of the user whose refresh token should be removed.
+   * @returns A promise resolving to the result of `TokensService.removeRefreshToken`.
+   */
   async logout(email: string) {
     // Видалення (або занулення) Refresh токена з бази даних
     return this.tokensService.removeRefreshToken(email);
