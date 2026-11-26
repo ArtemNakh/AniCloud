@@ -1,6 +1,6 @@
 export enum TokenType {
-  refresh,
-  verify,
+  refresh = 'refresh-token',
+  verify = 'verify-token',
 }
 
 export interface IToken {
